@@ -1,0 +1,62 @@
+#ifndef Includes_h
+#define Includes_h
+
+#import "../imgui/imgui/imgui.h"
+#import "../imgui/imgui/imgui_internal.h"
+#import "../imgui/ImGuiWrapper.h"
+#import "../imgui/ImGuiStyleWrapper.h"
+#import "../imgui/GuiRenderer.h"
+#include "Menu.h"
+#include "UserMenu.h"
+#include "../Fonts.hpp"
+#include <vector>
+#include <functional>
+#include <iostream>
+
+namespace GameOffsets{
+static long GWorld = 0x0;
+static long GUObjectArray = 0x0;
+static long GEngine = 0x0;
+static long ProcessEvent = 0x0;
+}
+struct GlobalVariables{
+    static GlobalVariables& i() {
+        static GlobalVariables instance;
+        return instance;
+    }
+    void Save(){
+        NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        @autoreleasepool {
+            NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Preferences.txt"];
+            if(![fileManager fileExistsAtPath:filePath]){
+                [fileManager createFileAtPath:filePath contents:[NSData data] attributes:nil];
+            } else {
+                NSData *data = [NSData dataWithBytes:this length:sizeof(GlobalVariables)];
+                [data writeToFile:filePath options:NSDataWritingAtomic error:nil];
+            }
+        }
+    }
+    void Load(){
+        NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        @autoreleasepool {
+            NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Preferences.txt"];
+            if(![fileManager fileExistsAtPath:filePath]){
+                [fileManager createFileAtPath:filePath contents:[NSData data] attributes:nil];
+            }else{
+                NSData *data = [NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil];
+                if (data) {
+                    [data getBytes:this length:sizeof(GlobalVariables)];
+                }
+            }
+        }
+    }
+    bool Value = true;
+    float TestGlobalFloat = 2;
+};
+
+static GlobalVariables& Variables = GlobalVariables::i();
+
+
+#endif /* Includes_h */ 
