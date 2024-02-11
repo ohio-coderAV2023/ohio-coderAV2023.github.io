@@ -1,62 +1,66 @@
-#ifndef Includes_h
-#define Includes_h
-
-#import "../imgui/imgui/imgui.h"
-#import "../imgui/imgui/imgui_internal.h"
-#import "../imgui/ImGuiWrapper.h"
-#import "../imgui/ImGuiStyleWrapper.h"
-#import "../imgui/GuiRenderer.h"
-#include "Menu.h"
-#include "UserMenu.h"
-#include "../Fonts.hpp"
-#include <vector>
-#include <functional>
-#include <iostream>
-
-namespace GameOffsets{
-static long GWorld = 0x0;
-static long GUObjectArray = 0x0;
-static long GEngine = 0x0;
-static long ProcessEvent = 0x0;
-}
-struct GlobalVariables{
-    static GlobalVariables& i() {
-        static GlobalVariables instance;
-        return instance;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.8">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 8px;
+      padding: 8px;
+      box-sizing: border-box;
+      font-family: sans-serif;
     }
-    void Save(){
-        NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        @autoreleasepool {
-            NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Preferences.txt"];
-            if(![fileManager fileExistsAtPath:filePath]){
-                [fileManager createFileAtPath:filePath contents:[NSData data] attributes:nil];
-            } else {
-                NSData *data = [NSData dataWithBytes:this length:sizeof(GlobalVariables)];
-                [data writeToFile:filePath options:NSDataWritingAtomic error:nil];
-            }
-        }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 108vh;
+      background: #000;
     }
-    void Load(){
-        NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        @autoreleasepool {
-            NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"Preferences.txt"];
-            if(![fileManager fileExistsAtPath:filePath]){
-                [fileManager createFileAtPath:filePath contents:[NSData data] attributes:nil];
-            }else{
-                NSData *data = [NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:nil];
-                if (data) {
-                    [data getBytes:this length:sizeof(GlobalVariables)];
-                }
-            }
-        }
+
+    nav a {
+      position: relative;
+      font-size: 1.1em;
+      font-weight: 580;
+      color: #333;
+      text-decoration: none;
+      padding: 6px 28px;
+      transition: 0.5s;
     }
-    bool Value = true;
-    float TestGlobalFloat = 2;
-};
 
-static GlobalVariables& Variables = GlobalVariables::i();
+    nav a:hover {
+      color: #0ef;
+    }
 
+    nav a span {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 100%;
+      height: 108%;
+      z-index: -1;
+      border-bottom: 2px solid #0ef;
+      border-radius: 15px;
+      transform: scale(1) translateY(50px);
+      opacity: 0;
+      transition: 0.5s;
+    }
 
-#endif /* Includes_h */ 
+    nav a:hover span {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#">Home <span></span></a>
+    <a href="#">About <span></span></a>
+    <a href="#">Services <span></span></a>
+    <a href="#">Contact <span></span></a>
+    <a href="#">Help <span></span></a>
+  </nav>
+</body>
+</html>
